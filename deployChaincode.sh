@@ -352,23 +352,23 @@ chaincodeQuery() {
 # Run this function if you add any new dependency in chaincode
 # presetup  -- not executing for js
 
-# packageChaincode
-# installChaincode
-# queryInstalled
-# approveForMyTrans
-# checkCommitReadyness
-# approveForMyManuf
-# checkCommitReadyness
-# approveForMyInsur
-# checkCommitReadyness
-# approveForMyOwner
-# checkCommitReadyness
-# approveForMyScrap
-# checkCommitReadyness
-# commitChaincodeDefination
-# queryCommitted
+packageChaincode
+installChaincode
+queryInstalled
+approveForMyTrans
+checkCommitReadyness
+approveForMyManuf
+checkCommitReadyness
+approveForMyInsur
+checkCommitReadyness
+approveForMyOwner
+checkCommitReadyness
+approveForMyScrap
+checkCommitReadyness
+commitChaincodeDefination
+queryCommitted
 chaincodeInvokeInit
  sleep 5
-chaincodeInvoke
-sleep 3
+#chaincodeInvoke
+#sleep 3
 chaincodeQuery
