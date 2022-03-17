@@ -236,6 +236,7 @@ app.post('/channels/:channelName/chaincodes/:chaincodeName', async function (req
     }
 });
 
+// Query transaction on chaincode on target peers
 app.get('/channels/:channelName/chaincodes/:chaincodeName', async function (req, res) {
     try {
         logger.debug('==================== QUERY BY CHAINCODE ==================');

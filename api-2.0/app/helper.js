@@ -9,9 +9,12 @@ const util = require('util');
 
 const getCCP = async (org) => {
     let ccpPath = null;
-    org == 'Org1' ? ccpPath = path.resolve(__dirname, '..', 'config', 'connection-org1.json') : null
-    org == 'Org2' ? ccpPath = path.resolve(__dirname, '..', 'config', 'connection-org2.json') : null
-    org == 'Org3' ? ccpPath = path.resolve(__dirname, '..', 'config', 'connection-org3.json') : null
+    org == 'Trans' ? ccpPath = path.resolve(__dirname, '..', 'config', 'connection-trans.json') : null
+    org == 'Manuf' ? ccpPath = path.resolve(__dirname, '..', 'config', 'connection-manuf.json') : null
+    org == 'Insur' ? ccpPath = path.resolve(__dirname, '..', 'config', 'connection-insur.json') : null
+    org == 'Owner' ? ccpPath = path.resolve(__dirname, '..', 'config', 'connection-owner.json') : null
+    org == 'Scrap' ? ccpPath = path.resolve(__dirname, '..', 'config', 'connection-scrap.json') : null
+
     const ccpJSON = fs.readFileSync(ccpPath, 'utf8')
     const ccp = JSON.parse(ccpJSON);
     return ccp
@@ -19,26 +22,42 @@ const getCCP = async (org) => {
 
 const getCaUrl = async (org, ccp) => {
     let caURL = null
-    org == 'Org1' ? caURL = ccp.certificateAuthorities['ca.org1.example.com'].url : null
-    org == 'Org2' ? caURL = ccp.certificateAuthorities['ca.org2.example.com'].url : null
-    org == 'Org3' ? caURL = ccp.certificateAuthorities['ca.org3.example.com'].url : null
+    org == 'Trans' ? caURL = ccp.certificateAuthorities['ca.trans.example.com'].url : null
+    org == 'Manuf' ? caURL = ccp.certificateAuthorities['ca.manuf.example.com'].url : null
+    org == 'Insur' ? caURL = ccp.certificateAuthorities['ca.insur.example.com'].url : null
+    org == 'Owner' ? caURL = ccp.certificateAuthorities['ca.owner.example.com'].url : null
+    org == 'Scrap' ? caURL = ccp.certificateAuthorities['ca.scrap.example.com'].url : null
+
     return caURL
 
 }
 
 const getWalletPath = async (org) => {
     let walletPath = null
-    org == 'Org1' ? walletPath = path.join(process.cwd(), 'org1-wallet') : null
-    org == 'Org2' ? walletPath = path.join(process.cwd(), 'org2-wallet') : null
-    org == 'Org3' ? walletPath = path.join(process.cwd(), 'org3-wallet') : null
+    org == 'Trans' ? walletPath = path.join(process.cwd(), 'trans-wallet') : null
+    org == 'Manuf' ? walletPath = path.join(process.cwd(), 'manuf-wallet') : null
+    org == 'Insur' ? walletPath = path.join(process.cwd(), 'insur-wallet') : null
+    org == 'Owner' ? walletPath = path.join(process.cwd(), 'owner-wallet') : null
+    org == 'Scrap' ? walletPath = path.join(process.cwd(), 'scrap-wallet') : null
+
     return walletPath
 }
 
-
+// Affiliations are not being used currently
 const getAffiliation = async (org) => {
     // Default in ca config file we have only two affiliations, if you want ti use org3 ca, you have to update config file with third affiliation
     //  Here already two Affiliation are there, using i am using "org2.department1" even for org3
-    return org == "Org1" ? 'org1.department1' : 'org2.department1'
+    // return org == "Org1" ? 'org1.department1' : 'org2.department1'
+
+    let aff = null
+    org == 'Trans' ? aff = 'trans.department1' : null
+    org == 'Manuf' ? aff = 'manuf.department1' : null
+    org == 'Insur' ? aff = 'insur.department1' : null
+    org == 'Owner' ? aff = 'owner.department1' : null
+    org == 'Scrap' ? aff = 'scrap.department1' : null
+
+    return aff
+
 }
 
 const getRegisteredUser = async (username, userOrg, isJson) => {
@@ -77,7 +96,9 @@ const getRegisteredUser = async (username, userOrg, isJson) => {
     let secret;
     try {
         // Register the user, enroll the user, and import the new identity into the wallet.
-        secret = await ca.register({ affiliation: await getAffiliation(userOrg), enrollmentID: username, role: 'client' }, adminUser);
+        //secret = await ca.register({ affiliation: await getAffiliation(userOrg), enrollmentID: username, role: 'client' }, adminUser);
+        secret = await ca.register({ enrollmentID: username, role: 'client' }, adminUser);
+
         // const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: username, role: 'client', attrs: [{ name: 'role', value: 'approver', ecert: true }] }, adminUser);
 
     } catch (error) {
@@ -121,17 +142,22 @@ const isUserRegistered = async (username, userOrg) => {
 
 const getCaInfo = async (org, ccp) => {
     let caInfo = null
-    org == 'Org1' ? caInfo = ccp.certificateAuthorities['ca.org1.example.com'] : null
-    org == 'Org2' ? caInfo = ccp.certificateAuthorities['ca.org2.example.com'] : null
-    org == 'Org3' ? caInfo = ccp.certificateAuthorities['ca.org3.example.com'] : null
+    org == 'Trans' ? caInfo = ccp.certificateAuthorities['ca.trans.example.com'] : null
+    org == 'Manuf' ? caInfo = ccp.certificateAuthorities['ca.manuf.example.com'] : null
+    org == 'Insur' ? caInfo = ccp.certificateAuthorities['ca.insur.example.com'] : null
+    org == 'Owner' ? caInfo = ccp.certificateAuthorities['ca.owner.example.com'] : null
+    org == 'Scrap' ? caInfo = ccp.certificateAuthorities['ca.scrap.example.com'] : null
     return caInfo
 }
 
 const getOrgMSP = (org) => {
     let orgMSP = null
-    org == 'Org1' ? orgMSP = 'Org1MSP' : null
-    org == 'Org2' ? orgMSP = 'Org2MSP' : null
-    org == 'Org3' ? orgMSP = 'Org3MSP' : null
+    org == 'Trans' ? orgMSP = 'TransMSP' : null
+    org == 'Manuf' ? orgMSP = 'ManufMSP' : null
+    org == 'Insur' ? orgMSP = 'InsurMSP' : null
+    org == 'Owner' ? orgMSP = 'OwnerMSP' : null
+    org == 'Scrap' ? orgMSP = 'ScrapMSP' : null
+
     return orgMSP
 
 }
@@ -210,7 +236,8 @@ const registerAndGerSecret = async (username, userOrg) => {
     let secret;
     try {
         // Register the user, enroll the user, and import the new identity into the wallet.
-        secret = await ca.register({ affiliation: await getAffiliation(userOrg), enrollmentID: username, role: 'client' }, adminUser);
+        //secret = await ca.register({ affiliation: await getAffiliation(userOrg), enrollmentID: username, role: 'client' }, adminUser);
+        secret = await ca.register({enrollmentID: username, role: 'client' }, adminUser);
         // const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: username, role: 'client', attrs: [{ name: 'role', value: 'approver', ecert: true }] }, adminUser);
         const enrollment = await ca.enroll({
             enrollmentID: username,

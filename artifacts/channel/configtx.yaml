@@ -37,7 +37,7 @@ Organizations:
 
         AnchorPeers:
             - Host: peer0.trans.example.com
-              Port: 9051
+              Port: 7051
 
     - &Manuf
         Name: ManufMSP
@@ -87,7 +87,7 @@ Organizations:
 
         AnchorPeers:
             - Host: peer0.insur.example.com
-              Port: 9051
+              Port: 11051
 
     - &Owner
         Name: OwnerMSP
@@ -112,7 +112,7 @@ Organizations:
 
         AnchorPeers:
             - Host: peer0.owner.example.com
-              Port: 9051
+              Port: 13051
     
     - &Scrap
         Name: ScrapMSP
@@ -137,7 +137,7 @@ Organizations:
 
         AnchorPeers:
             - Host: peer0.scrap.example.com
-              Port: 9051
+              Port: 15051
 Capabilities:
     Channel: &ChannelCapabilities
         V2_0: true

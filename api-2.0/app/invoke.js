@@ -46,14 +46,18 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
         let result;
         let message;
 
+        
         switch (fcn) {
-            case "CreateCar":
-                result = await contract.submitTransaction('SmartContract:'+fcn, args[0]);
+            case "createCar":
+                const myObj = JSON.parse(args[0]);
+                console.log(myObj)
+                result = await contract.submitTransaction('createCar',myObj.id,myObj.make,myObj.model,myObj.color,myObj.owner);
+                //result = await contract.submitTransaction('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom');
                 result = {txid: result.toString()}
                 break;
-            case "UpdateCarOwner":
+            case "changeCarOwner":
                 console.log("=============")
-                result = await contract.submitTransaction('SmartContract:'+fcn, args[0], args[1]);
+                result = await contract.submitTransaction('changeCarOwner', 'CAR1', 'Eldho' );
                 result = {txid: result.toString()}
                 break;
             case "CreateDocument":

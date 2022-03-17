@@ -23,7 +23,7 @@ CAPORT=7054
 PEERPEM=../../artifacts/channel/crypto-config/peerOrganizations/trans.example.com/peers/peer0.trans.example.com/tls/tlscacerts/tls-localhost-7054-ca-trans-example-com.pem
 CAPEM=../../artifacts/channel/crypto-config/peerOrganizations/trans.example.com/msp/tlscacerts/ca.crt
 
-echo "$(json_ccp $ORG $org $P0PORT $CAPORT $PEERPEM $CAPEM )" > connection-trans.json
+echo "$(json_ccp $ORG $org $P0PORT $CAPORT $PEERPEM $CAPEM)" > connection-trans.json
 
 ORG=Manuf
 org=manuf
