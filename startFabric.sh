@@ -3,7 +3,7 @@ docker-compose up -d
 ./create-certificate-with-ca.sh
 
 cd ..
-./create-artifacts
+./create-artifacts.sh
 
 cd ..
 docker-compose up -d
