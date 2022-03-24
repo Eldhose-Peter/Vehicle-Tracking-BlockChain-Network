@@ -12,6 +12,7 @@ cd ..
 cd ..
 docker-compose up -d
 
+sleep 5
 cd ..
 ./createChannel.sh
 ./deployChaincode.sh
