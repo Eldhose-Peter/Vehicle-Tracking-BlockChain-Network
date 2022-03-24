@@ -1,7 +1,7 @@
 cd artifacts
 docker-compose down -v
 
-cd artifacts/channel/create-certificate-with-ca
+cd channel/create-certificate-with-ca
 docker-compose down -v
 docker-compose up -d
 ./create-certificate-with-ca.sh
