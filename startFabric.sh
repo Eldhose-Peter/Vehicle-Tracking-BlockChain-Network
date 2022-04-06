@@ -16,3 +16,16 @@ sleep 5
 cd ..
 ./createChannel.sh
 ./deployChaincode.sh
+
+sleep 5
+kill -9 $(lsof -t -i:4000)
+
+
+cd api-2.0/config
+./generate-ccp.sh
+
+cd ..
+node app.js
+
+
+
