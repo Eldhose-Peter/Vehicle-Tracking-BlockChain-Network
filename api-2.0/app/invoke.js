@@ -59,7 +59,8 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
                 break;
             case "changeCarOwner":
                 console.log("=============")
-                result = await contract.submitTransaction('changeCarOwner', 'CAR1', 'Eldho' );
+                //result = await contract.submitTransaction('changeCarOwner', 'CAR1', 'Eldho' );
+                result = await contract.submitTransaction('changeCarOwner',args[0],args[1]);
                 result = {txid: result.toString()}
                 break;
             case "CreateDocument":
