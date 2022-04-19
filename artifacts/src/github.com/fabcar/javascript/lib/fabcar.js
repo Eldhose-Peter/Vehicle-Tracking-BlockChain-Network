@@ -21,7 +21,7 @@ class FabCar extends Contract {
                 mileage: 15,
                 lastPrice: 1000000,
                 ownerID: 1,
-                ownerType: 'First Hand',
+                ownerLevel: 1,
                 insuranceID: 1,
                 year: 2015,
                 kmDriven: 50000,
@@ -38,7 +38,7 @@ class FabCar extends Contract {
                 mileage: 15,
                 lastPrice: 1000000,
                 ownerID: 1,
-                ownerType: 'First Hand',
+                ownerLevel: 1,
                 insuranceID: 1,
                 year: 2015,
                 kmDriven: 50000,
@@ -55,7 +55,7 @@ class FabCar extends Contract {
                 mileage: 15,
                 lastPrice: 1000000,
                 ownerID: 1,
-                ownerType: 'First Hand',
+                ownerLevel: 1,
                 insuranceID: 1,
                 year: 2015,
                 kmDriven: 50000,
@@ -72,7 +72,7 @@ class FabCar extends Contract {
                 mileage: 15,
                 lastPrice: 1000000,
                 ownerID: 1,
-                ownerType: 'First Hand',
+                ownerLevel: 1,
                 insuranceID: 1,
                 year: 2015,
                 kmDriven: 50000,
@@ -89,7 +89,7 @@ class FabCar extends Contract {
                 mileage: 15,
                 lastPrice: 1000000,
                 ownerID: 1,
-                ownerType: 'First Hand',
+                ownerLevel: 1,
                 insuranceID: 1,
                 year: 2015,
                 kmDriven: 50000,
@@ -106,7 +106,7 @@ class FabCar extends Contract {
                 mileage: 15,
                 lastPrice: 1000000,
                 ownerID: 1,
-                ownerType: 'First Hand',
+                ownerLevel: 1,
                 insuranceID: 1,
                 year: 2015,
                 kmDriven: 50000,
@@ -123,7 +123,7 @@ class FabCar extends Contract {
                 mileage: 15,
                 lastPrice: 1000000,
                 ownerID: 1,
-                ownerType: 'First Hand',
+                ownerLevel: 1,
                 insuranceID: 1,
                 year: 2015,
                 kmDriven: 50000,
@@ -140,7 +140,7 @@ class FabCar extends Contract {
                 mileage: 15,
                 lastPrice: 1000000,
                 ownerID: 1,
-                ownerType: 'First Hand',
+                ownerLevel: 1,
                 insuranceID: 1,
                 year: 2015,
                 kmDriven: 50000,
@@ -157,7 +157,7 @@ class FabCar extends Contract {
                 mileage: 15,
                 lastPrice: 1000000,
                 ownerID: 1,
-                ownerType: 'First Hand',
+                ownerLevel: 1,
                 insuranceID: 1,
                 year: 2015,
                 kmDriven: 50000,
@@ -174,7 +174,7 @@ class FabCar extends Contract {
                 mileage: 15,
                 lastPrice: 1000000,
                 ownerID: 1,
-                ownerType: 'First Hand',
+                ownerLevel: 1,
                 insuranceID: 1,
                 year: 2015,
                 kmDriven: 50000,
@@ -202,7 +202,7 @@ class FabCar extends Contract {
         return carAsBytes.toString();
     }
 
-    async createCar(ctx, carNumber, make, model, color, owner,mileage,lastPrice,ownerId,ownerType,insuranceID,year,kmDriven,fuelType,transmissionType,seats,maxPower) {
+    async createCar(ctx, carNumber, make, model, color, owner,mileage,lastPrice,ownerId,ownerLevel,insuranceID,year,kmDriven,fuelType,transmissionType,seats,maxPower) {
         console.info('============= START : Create Car ===========');
 
         const car = {
@@ -214,7 +214,7 @@ class FabCar extends Contract {
             mileage,
             lastPrice,
             ownerId,
-            ownerType,
+            ownerLevel,
             insuranceID,
             year,
             kmDriven,
@@ -256,6 +256,9 @@ class FabCar extends Contract {
         }
         const car = JSON.parse(carAsBytes.toString());
         car.owner = newOwner;
+        
+        //increament owner level whenever there is a change of owners
+        car.ownerLevel = car.ownerLevel+1;
 
         await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
         console.info('============= END : changeCarOwner ===========');
