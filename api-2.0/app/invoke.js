@@ -53,7 +53,7 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
                 console.log(myObj)
                 result = await contract.submitTransaction('createCar',myObj.id,myObj.make,myObj.model,myObj.color,myObj.owner,
                 myObj.mileage,myObj.lastPrice,myObj.ownerID,myObj.ownerLevel,myObj.insuranceID,myObj.year,myObj.kmDriven,
-                myObj.fuelType,myObj.transmissionType,myObj.seats,myObj.maxPower);
+                myObj.fuelType,myObj.transmissionType,myObj.seats,myObj.maxPower,myObj.status);
                 //result = await contract.submitTransaction('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom');
                 result = {txid: result.toString()}
                 break;

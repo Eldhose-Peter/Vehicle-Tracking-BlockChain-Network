@@ -29,6 +29,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                status: 'Vehicle-Registered',
             },
             {
                 color: 'red',
@@ -46,6 +47,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                status: 'Vehicle-Registered',
             },
             {
                 color: 'green',
@@ -63,6 +65,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                status: 'Vehicle-Registered',
             },
             {
                 color: 'yellow',
@@ -80,6 +83,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                status: 'Vehicle-Registered',
             },
             {
                 color: 'black',
@@ -97,6 +101,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                status: 'Vehicle-Registered',
             },
             {
                 color: 'purple',
@@ -114,6 +119,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                status: 'Vehicle-Registered',
             },
             {
                 color: 'white',
@@ -131,6 +137,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                status: 'Vehicle-Registered',
             },
             {
                 color: 'violet',
@@ -148,6 +155,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                status: 'Vehicle-Registered',
             },
             {
                 color: 'indigo',
@@ -165,6 +173,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                status: 'Vehicle-Registered',
             },
             {
                 color: 'brown',
@@ -182,6 +191,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                status: 'Vehicle-Registered',
             },
         ];
 
@@ -226,7 +236,7 @@ class FabCar extends Contract {
         return carAsBytes.toString();
     }
 
-    async createCar(ctx, carNumber, make, model, color, owner,mileage,lastPrice,ownerId,ownerLevel,insuranceID,year,kmDriven,fuelType,transmissionType,seats,maxPower) {
+    async createCar(ctx, carNumber, make, model, color, owner,mileage,lastPrice,ownerId,ownerLevel,insuranceID,year,kmDriven,fuelType,transmissionType,seats,maxPower,status) {
         console.info('============= START : Create Car ===========');
 
         const car = {
@@ -246,6 +256,7 @@ class FabCar extends Contract {
             transmissionType,
             seats,
             maxPower,
+            status,
         };
 
         await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
@@ -283,6 +294,7 @@ class FabCar extends Contract {
         
         //increament owner level whenever there is a change of owners
         car.ownerLevel = car.ownerLevel+1;
+        car.status = "Owner-Transfered"
 
         await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
         console.info('============= END : changeCarOwner ===========');
