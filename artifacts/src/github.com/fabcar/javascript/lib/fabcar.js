@@ -190,6 +190,30 @@ class FabCar extends Contract {
             await ctx.stub.putState('CAR' + i, Buffer.from(JSON.stringify(cars[i])));
             console.info('Added <--> ', cars[i]);
         }
+
+        const insuranceSchemes = [
+            {
+                name: 'policy2256',
+                cost: 10000,
+                coverage: 'fullbody',
+                agency: 'MIC',
+            },
+            {
+                name: 'policy1776',
+                cost: 8000,
+                coverage: 'fullbody',
+                agency: 'MIC',
+            },
+
+        ];
+
+        
+
+        for (let i = 0; i < cars.length; i++) {
+            insuranceSchemes[i].docType = 'insuranceScheme';
+            await ctx.stub.putState('SCHEME' + i, Buffer.from(JSON.stringify(insuranceSchemes[i])));
+            console.info('Added <--> ', insuranceSchemes[i]);
+        }
         console.info('============= END : Initialize Ledger ===========');
     }
 
