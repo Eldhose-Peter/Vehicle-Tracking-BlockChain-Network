@@ -346,6 +346,16 @@ class FabCar extends Contract {
         return JSON.stringify(result);
     }
 
+     //Dynamic query car by - owner
+     async queryCarByOwner(ctx,owner){
+
+        let queryString = {};
+        queryString.selector = {"owner":owner}
+        let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
+        let result = await this.getIteratorData(iterator);
+        return JSON.stringify(result);
+    }
+
     //Dynamic query car by - ownerLevel equal to 1
     async queryCarForSale(ctx){
 

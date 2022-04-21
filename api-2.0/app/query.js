@@ -57,6 +57,10 @@ const query = async (channelName, chaincodeName, args, fcn, username, org_name) 
                 console.log("=============")
                 result = await contract.evaluateTransaction('queryCar', args[0]);
                 break;
+            case "queryCarByOwner":
+                console.log("=============")
+                result = await contract.evaluateTransaction('queryCarByOwner', args[0]);
+                break;
             case "queryCarForSale":
                 console.log("=============")
                 result = await contract.evaluateTransaction('queryCarForSale', args[0]);
