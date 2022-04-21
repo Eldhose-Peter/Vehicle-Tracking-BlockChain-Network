@@ -193,6 +193,42 @@ class FabCar extends Contract {
                 maxPower: 150,
                 status: 'Vehicle-Registered',
             },
+            {
+                color: 'black',
+                make: 'Volkswagen',
+                model: 'Polo',
+                owner: 'Volkswagen',
+                mileage: 15,
+                lastPrice: 1000000,
+                ownerID: 0,
+                ownerLevel: 0,
+                insuranceID: 0,
+                year: 2020,
+                kmDriven: 0,
+                fuelType: 'Diesel',
+                transmissionType : 'Automatic', 
+                seats: 5,
+                maxPower: 150,
+                status: 'Vehicle-OnSale',
+            },
+            {
+                color: 'white',
+                make: 'Toyota',
+                model: 'Yaris',
+                owner: 'Toyota',
+                mileage: 15,
+                lastPrice: 1000000,
+                ownerID: 0,
+                ownerLevel: 0,
+                insuranceID: 0,
+                year: 2020,
+                kmDriven: 0,
+                fuelType: 'Diesel',
+                transmissionType : 'Automatic', 
+                seats: 5,
+                maxPower: 150,
+                status: 'Vehicle-OnSale',
+            },
         ];
 
         for (let i = 0; i < cars.length; i++) {
@@ -219,7 +255,7 @@ class FabCar extends Contract {
 
         
 
-        for (let i = 0; i < cars.length; i++) {
+        for (let i = 0; i < insuranceSchemes.length; i++) {
             insuranceSchemes[i].docType = 'insuranceScheme';
             await ctx.stub.putState('SCHEME' + i, Buffer.from(JSON.stringify(insuranceSchemes[i])));
             console.info('Added <--> ', insuranceSchemes[i]);
@@ -314,7 +350,9 @@ class FabCar extends Contract {
     async queryCarForSale(ctx){
 
         let queryString = {};
-        queryString.selector = {"docType":"car","ownerLevel":0}
+        queryString.selector = {};
+        queryString.selector.docType = 'car';
+        queryString.selector.ownerLevel = 0;
         let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
         let result = await this.getIteratorData(iterator);
         return JSON.stringify(result);
@@ -324,7 +362,9 @@ class FabCar extends Contract {
     async queryCarForResale(ctx){
 
         let queryString = {};
-        queryString.selector = {"docType":"car","ownerLevel":{"$gt":0}}
+        queryString.selector ={};
+        queryString.selector.docType = 'car';
+        queryString.selector.ownerLevel = {"$gt": 0};
         let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
         let result = await this.getIteratorData(iterator);
         return JSON.stringify(result);
