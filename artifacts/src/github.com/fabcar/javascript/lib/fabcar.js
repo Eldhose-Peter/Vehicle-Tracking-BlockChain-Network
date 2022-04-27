@@ -336,6 +336,22 @@ class FabCar extends Contract {
         console.info('============= END : changeCarOwner ===========');
     }
 
+    async putUpForResale(ctx, carNumber) {
+        console.info('============= START : putUpForResale ===========');
+
+        const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
+        if (!carAsBytes || carAsBytes.length === 0) {
+            throw new Error(`${carNumber} does not exist`);
+        }
+        const car = JSON.parse(carAsBytes.toString());
+        
+        car.status = "For-Resale"
+
+        await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
+        console.info('============= END : putUpForResale ===========');
+    }
+
+
     //Dynamic query car by - make
     async queryCarByMake(ctx,make){
 
