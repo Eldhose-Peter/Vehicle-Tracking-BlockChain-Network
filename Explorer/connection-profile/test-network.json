@@ -1,0 +1,61 @@
+{
+    "name": "test-network",
+    "version": "1.0.0",
+    "license": "Apache-2.0",
+    "client": {
+        "tlsEnable": true,
+        "adminCredential": {
+            "id": "exploreradmin",
+            "password": "exploreradminpw"
+        },
+        "enableAuthentication": true,
+        "organization": "TransMSP",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                },
+                "orderer": "300"
+            }
+        }
+    },
+    "channels": {
+        "mychannel": {
+            "peers": {
+                "peer0.trans.example.com": {}
+            },
+            "connection": {
+                "timeout": {
+                    "peer": {
+                        "endorser": "6000",
+                        "eventHub": "6000",
+                        "eventReg": "6000"
+                    }
+                }
+            }
+        }
+    },
+    "organizations": {
+        "TransMSP": {
+            "mspid": "TransMSP",
+            "adminPrivateKey": {
+                "path": "/home/eldhose/Public/Project/my-network/artifacts/channel/crypto-config/peerOrganizations/trans.example.com/users/Admin@trans.example.com/msp/keystore/f8c152cce09d4b9d371983633e8e0732035e17a1ec4a36c691803a0de94b637c_sk"
+            },
+            "peers": ["peer0.trans.example.com"],
+            "signedCert": {
+                "path": "/home/eldhose/Public/Project/my-network/artifacts/channel/crypto-config/peerOrganizations/trans.example.com/users/Admin@trans.example.com/msp/signcerts/cert.pem"
+            }
+        }
+    },
+    "peers": {
+        "peer0.trans.example.com": {
+            "tlsCACerts": {
+                "path": "/home/eldhose/Public/Project/my-network/artifacts/channel/crypto-config/peerOrganizations/trans.example.com/peers/peer0.trans.example.com/tls/ca.crt"
+            },
+            "url": "grpcs://localhost:7051",
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.trans.example.com"
+            }
+        }
+    }
+}
