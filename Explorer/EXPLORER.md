@@ -161,3 +161,9 @@ $ npm run build
 
 * `npm run app-stop`
   * It will stop the node server
+
+Or
+
+```
+$ ./start.sh
+```
