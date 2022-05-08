@@ -26,6 +26,7 @@ class FabCar extends Contract {
                 insuranceExpiry : 2022/05/22,
                 isInsuranceVerified : true,
                 raiseClaim : false,
+                requestForInspection : false,
                 year: 2015,
                 kmDriven: 50000,
                 fuelType: 'Diesel',
@@ -47,6 +48,7 @@ class FabCar extends Contract {
                 insuranceExpiry : 2022/05/22,
                 isInsuranceVerified : true,
                 raiseClaim : false,
+                requestForInspection : false,
                 year: 2015,
                 kmDriven: 50000,
                 fuelType: 'Diesel',
@@ -68,6 +70,7 @@ class FabCar extends Contract {
                 insuranceExpiry : 2022/05/22,
                 isInsuranceVerified : true,
                 raiseClaim : false,
+                requestForInspection : false,
                 year: 2015,
                 kmDriven: 50000,
                 fuelType: 'Diesel',
@@ -89,6 +92,7 @@ class FabCar extends Contract {
                 insuranceExpiry : 2022/05/22,
                 isInsuranceVerified : true,
                 raiseClaim : false,
+                requestForInspection : false,
                 year: 2015,
                 kmDriven: 50000,
                 fuelType: 'Diesel',
@@ -110,6 +114,7 @@ class FabCar extends Contract {
                 insuranceExpiry : 2022/05/22,
                 isInsuranceVerified : true,
                 raiseClaim : false,
+                requestForInspection : false,
                 year: 2015,
                 kmDriven: 50000,
                 fuelType: 'Diesel',
@@ -131,6 +136,7 @@ class FabCar extends Contract {
                 insuranceExpiry : 2022/05/22,
                 isInsuranceVerified : true,
                 raiseClaim : false,
+                requestForInspection : false,
                 year: 2015,
                 kmDriven: 50000,
                 fuelType: 'Diesel',
@@ -152,6 +158,7 @@ class FabCar extends Contract {
                 insuranceExpiry : 2022/05/22,
                 isInsuranceVerified : true,
                 raiseClaim : false,
+                requestForInspection : false,
                 year: 2015,
                 kmDriven: 50000,
                 fuelType: 'Diesel',
@@ -173,6 +180,7 @@ class FabCar extends Contract {
                 insuranceExpiry : 2022/05/22,
                 isInsuranceVerified : true,
                 raiseClaim : false,
+                requestForInspection : false,
                 year: 2015,
                 kmDriven: 50000,
                 fuelType: 'Diesel',
@@ -194,6 +202,7 @@ class FabCar extends Contract {
                 insuranceExpiry : 2022/05/22,
                 isInsuranceVerified : true,
                 raiseClaim : false,
+                requestForInspection : false,
                 year: 2015,
                 kmDriven: 50000,
                 fuelType: 'Diesel',
@@ -215,6 +224,7 @@ class FabCar extends Contract {
                 insuranceExpiry : 2022/05/22,
                 isInsuranceVerified : true,
                 raiseClaim : false,
+                requestForInspection : false,
                 year: 2015,
                 kmDriven: 50000,
                 fuelType: 'Diesel',
@@ -236,6 +246,7 @@ class FabCar extends Contract {
                 insuranceExpiry : null,
                 isInsuranceVerified : false,
                 raiseClaim : false,
+                requestForInspection : false,
                 year: 2020,
                 kmDriven: 0,
                 fuelType: 'Diesel',
@@ -257,6 +268,7 @@ class FabCar extends Contract {
                 insuranceExpiry : null,
                 isInsuranceVerified : false,
                 raiseClaim : false,
+                requestForInspection : false,
                 year: 2020,
                 kmDriven: 0,
                 fuelType: 'Diesel',
@@ -327,6 +339,7 @@ class FabCar extends Contract {
             insuranceExpiry : 2022/05/22,
             isInsuranceVerified : true,
             raiseClaim : false,
+            requestForInspection : false,
             year,
             kmDriven,
             fuelType,
@@ -363,6 +376,15 @@ class FabCar extends Contract {
 
         let queryString = {};
         queryString.selector = {"docType" :'insuranceScheme'}
+        let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
+        let result = await this.getIteratorData(iterator);
+        return JSON.stringify(result);
+    }
+
+    async queryAllInspectionRequests(ctx){
+
+        let queryString = {};
+        queryString.selector = {"requestForInspection" : true}
         let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
         let result = await this.getIteratorData(iterator);
         return JSON.stringify(result);
@@ -432,7 +454,7 @@ class FabCar extends Contract {
     }
 
     async raiseClaimInsurance(ctx,carNumber){
-        console.info('============= START : purchaseInsurance ===========');
+        console.info('============= START : raiseClaimInsurance ===========');
 
         const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
         if (!carAsBytes || carAsBytes.length === 0) {
@@ -456,8 +478,28 @@ class FabCar extends Contract {
             throw new Error ('Insurance has expired or does not exist')
         }
 
-        console.info('============= END : purchaseInsurance ===========');
+        console.info('============= END : raiseClaimInsurance ===========');
     }
+
+    async requestInspection(ctx,carNumber){
+        console.info('============= START : requestInspection ===========');
+
+        const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
+        if (!carAsBytes || carAsBytes.length === 0) {
+            throw new Error(`${carNumber} does not exist`);
+        }
+        const car = JSON.parse(carAsBytes.toString());
+
+        car.requestForInspection = true;
+        car.status = "Request-For-Inspection";
+        await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
+
+        console.info('============= END : requestInspection ===========');
+    }
+
+
+
+    
     //Dynamic query car by - make
     async queryCarByMake(ctx,make){
 
