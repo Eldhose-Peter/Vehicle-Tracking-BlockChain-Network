@@ -299,7 +299,7 @@ class FabCar extends Contract {
         console.info('============= END : Create Car ===========');
     }
 
-    async queryAllCars(ctx) {
+    async queryAllDocuments(ctx) {
         const startKey = '';
         const endKey = '';
         const allResults = [];
@@ -318,6 +318,14 @@ class FabCar extends Contract {
         return JSON.stringify(allResults);
     }
 
+    async queryAllInsuranceSchemes(ctx){
+
+        let queryString = {};
+        queryString.selector = {"docType" :'insuranceScheme'}
+        let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
+        let result = await this.getIteratorData(iterator);
+        return JSON.stringify(result);
+    }
     async changeCarOwner(ctx, carNumber, newOwner) {
         console.info('============= START : changeCarOwner ===========');
 
