@@ -70,6 +70,21 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
                 result = await contract.submitTransaction('putUpForResale',args[0]);
                 result = {txid: result.toString()}
                 break;
+                
+            case "purchaseInsurance":
+                console.log("=============")
+                //result = await contract.submitTransaction('purchaseInsurance', 'CAR1','SCHEME0' );
+                result = await contract.submitTransaction('purchaseInsurance',args[0],args[1]);
+                result = {txid: result.toString()}
+                break;
+
+            case "raiseClaimInsurance":
+                    console.log("=============")
+                    //result = await contract.submitTransaction('raiseClaimInsurance', 'CAR1' );
+                    result = await contract.submitTransaction('raiseClaimInsurance',args[0]);
+                    result = {txid: result.toString()}
+                    break;
+
             case "CreateDocument":
                 result = await contract.submitTransaction('DocumentContract:'+fcn, args[0]);
                 console.log(result.toString())

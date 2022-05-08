@@ -23,6 +23,9 @@ class FabCar extends Contract {
                 ownerID: 1,
                 ownerLevel: 1,
                 insuranceID: 1,
+                insuranceExpiry : 2022/05/22,
+                isInsuranceVerified : true,
+                raiseClaim : false,
                 year: 2015,
                 kmDriven: 50000,
                 fuelType: 'Diesel',
@@ -41,6 +44,9 @@ class FabCar extends Contract {
                 ownerID: 1,
                 ownerLevel: 1,
                 insuranceID: 1,
+                insuranceExpiry : 2022/05/22,
+                isInsuranceVerified : true,
+                raiseClaim : false,
                 year: 2015,
                 kmDriven: 50000,
                 fuelType: 'Diesel',
@@ -59,6 +65,9 @@ class FabCar extends Contract {
                 ownerID: 1,
                 ownerLevel: 1,
                 insuranceID: 1,
+                insuranceExpiry : 2022/05/22,
+                isInsuranceVerified : true,
+                raiseClaim : false,
                 year: 2015,
                 kmDriven: 50000,
                 fuelType: 'Diesel',
@@ -77,6 +86,9 @@ class FabCar extends Contract {
                 ownerID: 1,
                 ownerLevel: 1,
                 insuranceID: 1,
+                insuranceExpiry : 2022/05/22,
+                isInsuranceVerified : true,
+                raiseClaim : false,
                 year: 2015,
                 kmDriven: 50000,
                 fuelType: 'Diesel',
@@ -95,6 +107,9 @@ class FabCar extends Contract {
                 ownerID: 1,
                 ownerLevel: 1,
                 insuranceID: 1,
+                insuranceExpiry : 2022/05/22,
+                isInsuranceVerified : true,
+                raiseClaim : false,
                 year: 2015,
                 kmDriven: 50000,
                 fuelType: 'Diesel',
@@ -113,6 +128,9 @@ class FabCar extends Contract {
                 ownerID: 1,
                 ownerLevel: 1,
                 insuranceID: 1,
+                insuranceExpiry : 2022/05/22,
+                isInsuranceVerified : true,
+                raiseClaim : false,
                 year: 2015,
                 kmDriven: 50000,
                 fuelType: 'Diesel',
@@ -131,6 +149,9 @@ class FabCar extends Contract {
                 ownerID: 1,
                 ownerLevel: 1,
                 insuranceID: 1,
+                insuranceExpiry : 2022/05/22,
+                isInsuranceVerified : true,
+                raiseClaim : false,
                 year: 2015,
                 kmDriven: 50000,
                 fuelType: 'Diesel',
@@ -149,6 +170,9 @@ class FabCar extends Contract {
                 ownerID: 1,
                 ownerLevel: 1,
                 insuranceID: 1,
+                insuranceExpiry : 2022/05/22,
+                isInsuranceVerified : true,
+                raiseClaim : false,
                 year: 2015,
                 kmDriven: 50000,
                 fuelType: 'Diesel',
@@ -167,6 +191,9 @@ class FabCar extends Contract {
                 ownerID: 1,
                 ownerLevel: 1,
                 insuranceID: 1,
+                insuranceExpiry : 2022/05/22,
+                isInsuranceVerified : true,
+                raiseClaim : false,
                 year: 2015,
                 kmDriven: 50000,
                 fuelType: 'Diesel',
@@ -185,6 +212,9 @@ class FabCar extends Contract {
                 ownerID: 1,
                 ownerLevel: 1,
                 insuranceID: 1,
+                insuranceExpiry : 2022/05/22,
+                isInsuranceVerified : true,
+                raiseClaim : false,
                 year: 2015,
                 kmDriven: 50000,
                 fuelType: 'Diesel',
@@ -203,6 +233,9 @@ class FabCar extends Contract {
                 ownerID: 0,
                 ownerLevel: 0,
                 insuranceID: 0,
+                insuranceExpiry : null,
+                isInsuranceVerified : false,
+                raiseClaim : false,
                 year: 2020,
                 kmDriven: 0,
                 fuelType: 'Diesel',
@@ -220,7 +253,10 @@ class FabCar extends Contract {
                 lastPrice: 1000000,
                 ownerID: 0,
                 ownerLevel: 0,
-                insuranceID: 0,
+                insuranceID: 0,  
+                insuranceExpiry : null,
+                isInsuranceVerified : false,
+                raiseClaim : false,
                 year: 2020,
                 kmDriven: 0,
                 fuelType: 'Diesel',
@@ -243,12 +279,14 @@ class FabCar extends Contract {
                 cost: 10000,
                 coverage: 'fullbody',
                 agency: 'MIC',
+                validity: 1,
             },
             {
                 name: 'policy1776',
                 cost: 8000,
                 coverage: 'fullbody',
                 agency: 'MIC',
+                validity: 2,
             },
 
         ];
@@ -286,6 +324,9 @@ class FabCar extends Contract {
             ownerId,
             ownerLevel,
             insuranceID,
+            insuranceExpiry : 2022/05/22,
+            isInsuranceVerified : true,
+            raiseClaim : false,
             year,
             kmDriven,
             fuelType,
@@ -359,7 +400,64 @@ class FabCar extends Contract {
         console.info('============= END : putUpForResale ===========');
     }
 
+    async purchaseInsurance(ctx,carNumber,insuranceID){
+        console.info('============= START : purchaseInsurance ===========');
 
+        const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
+        if (!carAsBytes || carAsBytes.length === 0) {
+            throw new Error(`${carNumber} does not exist`);
+        }
+        const car = JSON.parse(carAsBytes.toString());
+        
+        const insuranceAsBytes = await ctx.stub.getState(insuranceID); // get the car from chaincode state
+        if (!insuranceAsBytes || insuranceAsBytes.length === 0) {
+            throw new Error(`${insuranceID} does not exist`);
+        }
+        const insurance = JSON.parse(carAsBytes.toString());
+
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear() +insurance.validity; //increament year with validity to get expiry year
+        today =  yyyy+ '/' + mm + '/' +dd ;
+
+        car.insuranceID = insuranceID;
+        car.insuranceExpiry = today;
+        car.isInsuranceVerified = false;
+        car.raiseClaim = false;
+        car.status = "Insurance-Purchased"
+
+        await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
+        console.info('============= END : purchaseInsurance ===========');
+    }
+
+    async raiseClaimInsurance(ctx,carNumber){
+        console.info('============= START : purchaseInsurance ===========');
+
+        const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
+        if (!carAsBytes || carAsBytes.length === 0) {
+            throw new Error(`${carNumber} does not exist`);
+        }
+        const car = JSON.parse(carAsBytes.toString());
+
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear(); 
+        today =  yyyy+ '/' + mm + '/' +dd ;
+
+        if(car.insuranceExpiry!=null&&car.insuranceExpiry>=today){
+            car.raiseClaim = true;
+            car.status = "Insurance-Claim-Raised"
+            await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
+       
+        }
+        else{
+            throw new Error ('Insurance has expired or does not exist')
+        }
+
+        console.info('============= END : purchaseInsurance ===========');
+    }
     //Dynamic query car by - make
     async queryCarByMake(ctx,make){
 
