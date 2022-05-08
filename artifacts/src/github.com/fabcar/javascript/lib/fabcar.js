@@ -23,7 +23,7 @@ class FabCar extends Contract {
                 ownerID: 1,
                 ownerLevel: 1,
                 insuranceID: 1,
-                insuranceExpiry : 2022/05/22,
+                insuranceExpiry : '2022/05/22',
                 isInsuranceVerified : true,
                 raiseClaim : false,
                 requestForInspection : false,
@@ -45,7 +45,7 @@ class FabCar extends Contract {
                 ownerID: 1,
                 ownerLevel: 1,
                 insuranceID: 1,
-                insuranceExpiry : 2022/05/22,
+                insuranceExpiry : '2022/05/22',
                 isInsuranceVerified : true,
                 raiseClaim : false,
                 requestForInspection : false,
@@ -67,7 +67,7 @@ class FabCar extends Contract {
                 ownerID: 1,
                 ownerLevel: 1,
                 insuranceID: 1,
-                insuranceExpiry : 2022/05/22,
+                insuranceExpiry : '2022/05/22',
                 isInsuranceVerified : true,
                 raiseClaim : false,
                 requestForInspection : false,
@@ -89,7 +89,7 @@ class FabCar extends Contract {
                 ownerID: 1,
                 ownerLevel: 1,
                 insuranceID: 1,
-                insuranceExpiry : 2022/05/22,
+                insuranceExpiry : '2022/05/22',
                 isInsuranceVerified : true,
                 raiseClaim : false,
                 requestForInspection : false,
@@ -111,7 +111,7 @@ class FabCar extends Contract {
                 ownerID: 1,
                 ownerLevel: 1,
                 insuranceID: 1,
-                insuranceExpiry : 2022/05/22,
+                insuranceExpiry : '2022/05/22',
                 isInsuranceVerified : true,
                 raiseClaim : false,
                 requestForInspection : false,
@@ -133,7 +133,7 @@ class FabCar extends Contract {
                 ownerID: 1,
                 ownerLevel: 1,
                 insuranceID: 1,
-                insuranceExpiry : 2022/05/22,
+                insuranceExpiry : '2022/05/22',
                 isInsuranceVerified : true,
                 raiseClaim : false,
                 requestForInspection : false,
@@ -155,7 +155,7 @@ class FabCar extends Contract {
                 ownerID: 1,
                 ownerLevel: 1,
                 insuranceID: 1,
-                insuranceExpiry : 2022/05/22,
+                insuranceExpiry : '2022/05/22',
                 isInsuranceVerified : true,
                 raiseClaim : false,
                 requestForInspection : false,
@@ -177,7 +177,7 @@ class FabCar extends Contract {
                 ownerID: 1,
                 ownerLevel: 1,
                 insuranceID: 1,
-                insuranceExpiry : 2022/05/22,
+                insuranceExpiry : '2022/05/22',
                 isInsuranceVerified : true,
                 raiseClaim : false,
                 requestForInspection : false,
@@ -199,7 +199,7 @@ class FabCar extends Contract {
                 ownerID: 1,
                 ownerLevel: 1,
                 insuranceID: 1,
-                insuranceExpiry : 2022/05/22,
+                insuranceExpiry : '2022/05/22',
                 isInsuranceVerified : true,
                 raiseClaim : false,
                 requestForInspection : false,
@@ -221,7 +221,7 @@ class FabCar extends Contract {
                 ownerID: 1,
                 ownerLevel: 1,
                 insuranceID: 1,
-                insuranceExpiry : 2022/05/22,
+                insuranceExpiry : '2022/05/22',
                 isInsuranceVerified : true,
                 raiseClaim : false,
                 requestForInspection : false,
@@ -336,7 +336,7 @@ class FabCar extends Contract {
             ownerId,
             ownerLevel,
             insuranceID,
-            insuranceExpiry : 2022/05/22,
+            insuranceExpiry : '2022/05/22',
             isInsuranceVerified : true,
             raiseClaim : false,
             requestForInspection : false,
@@ -444,7 +444,7 @@ class FabCar extends Contract {
         today =  yyyy+ '/' + mm + '/' +dd ;
 
         car.insuranceID = insuranceID;
-        car.insuranceExpiry = today;
+        car.insuranceExpiry = String(today);
         car.isInsuranceVerified = false;
         car.raiseClaim = false;
         car.status = "Insurance-Purchased"
@@ -468,7 +468,7 @@ class FabCar extends Contract {
         var yyyy = today.getFullYear(); 
         today =  yyyy+ '/' + mm + '/' +dd ;
 
-        if(car.insuranceExpiry!=null&&car.insuranceExpiry>=today){
+        if(car.insuranceExpiry!=null&&car.insuranceExpiry>=String(today)){
             car.raiseClaim = true;
             car.status = "Insurance-Claim-Raised"
             await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
