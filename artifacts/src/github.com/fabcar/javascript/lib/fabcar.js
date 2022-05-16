@@ -389,6 +389,15 @@ class FabCar extends Contract {
         let result = await this.getIteratorData(iterator);
         return JSON.stringify(result);
     }
+
+    async queryAllInsuranceClaimRequests(ctx){
+
+        let queryString = {};
+        queryString.selector = {"raiseClaim" : true}
+        let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
+        let result = await this.getIteratorData(iterator);
+        return JSON.stringify(result);
+    }
     async changeCarOwner(ctx, carNumber, newOwner) {
         console.info('============= START : changeCarOwner ===========');
 
@@ -496,10 +505,7 @@ class FabCar extends Contract {
 
         console.info('============= END : requestInspection ===========');
     }
-
-
-
-    
+   
     //Dynamic query car by - make
     async queryCarByMake(ctx,make){
 
