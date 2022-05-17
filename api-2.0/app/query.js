@@ -81,6 +81,10 @@ const query = async (channelName, chaincodeName, args, fcn, username, org_name) 
                 console.log("=============")
                 result = await contract.evaluateTransaction('queryAllInspectionRequests', args[0]);
                 break;
+            case "queryRegistrationsNotVerified":
+                console.log("=============")
+                result = await contract.evaluateTransaction('queryRegistrationsNotVerified', args[0]);
+                break;
             default:
                 break;
         }

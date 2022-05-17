@@ -33,6 +33,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                isRegistrationVerified : true,
                 status: 'Vehicle-Registered',
             },
             {
@@ -55,6 +56,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                isRegistrationVerified : true,
                 status: 'Vehicle-Registered',
             },
             {
@@ -77,6 +79,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                isRegistrationVerified : true,
                 status: 'Vehicle-Registered',
             },
             {
@@ -99,6 +102,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                isRegistrationVerified : true,
                 status: 'Vehicle-Registered',
             },
             {
@@ -121,6 +125,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                isRegistrationVerified : true,
                 status: 'Vehicle-Registered',
             },
             {
@@ -143,6 +148,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                isRegistrationVerified : true,
                 status: 'Vehicle-Registered',
             },
             {
@@ -165,6 +171,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                isRegistrationVerified : true,
                 status: 'Vehicle-Registered',
             },
             {
@@ -187,6 +194,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                isRegistrationVerified : true,
                 status: 'Vehicle-Registered',
             },
             {
@@ -209,6 +217,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                isRegistrationVerified : true,
                 status: 'Vehicle-Registered',
             },
             {
@@ -231,6 +240,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                isRegistrationVerified : true,
                 status: 'Vehicle-Registered',
             },
             {
@@ -253,6 +263,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                isRegistrationVerified : true,
                 status: 'Vehicle-OnSale',
             },
             {
@@ -275,6 +286,7 @@ class FabCar extends Contract {
                 transmissionType : 'Automatic', 
                 seats: 5,
                 maxPower: 150,
+                isRegistrationVerified : true,
                 status: 'Vehicle-OnSale',
             },
         ];
@@ -346,6 +358,7 @@ class FabCar extends Contract {
             transmissionType,
             seats,
             maxPower,
+            engine,
             status,
         };
 
@@ -398,6 +411,16 @@ class FabCar extends Contract {
         let result = await this.getIteratorData(iterator);
         return JSON.stringify(result);
     }
+
+    async queryRegistrationsNotVerified(ctx){
+            
+            let queryString = {};
+            queryString.selector = {"isRegistrationVerified" : false}
+            let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
+            let result = await this.getIteratorData(iterator);
+            return JSON.stringify(result);
+    }
+
     async changeCarOwner(ctx, carNumber, newOwner) {
         console.info('============= START : changeCarOwner ===========');
 
@@ -411,6 +434,7 @@ class FabCar extends Contract {
         //increament owner level whenever there is a change of owners
         car.ownerLevel = car.ownerLevel+1;
         car.status = "Owner-Transfered"
+        car.isRegistrationVerified = false;
 
         await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
         console.info('============= END : changeCarOwner ===========');
@@ -533,6 +557,7 @@ class FabCar extends Contract {
         queryString.selector = {};
         queryString.selector.docType = 'car';
         queryString.selector.ownerLevel = 0;
+        queryString.selector.isRegistrationVerified = true;
         let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
         let result = await this.getIteratorData(iterator);
         return JSON.stringify(result);
@@ -545,6 +570,7 @@ class FabCar extends Contract {
         queryString.selector ={};
         queryString.selector.docType = 'car';
         queryString.selector.ownerLevel = {"$gt": 0};
+        queryString.selector.isRegistrationVerified = true;
         let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
         let result = await this.getIteratorData(iterator);
         return JSON.stringify(result);
