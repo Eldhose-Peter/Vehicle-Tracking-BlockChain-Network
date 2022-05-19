@@ -34,6 +34,7 @@ class FabCar extends Contract {
                 seats: 5,
                 maxPower: 150,
                 isRegistrationVerified : true,
+                healthStatus : 'Good',
                 status: 'Vehicle-Registered',
             },
             {
@@ -57,6 +58,7 @@ class FabCar extends Contract {
                 seats: 5,
                 maxPower: 150,
                 isRegistrationVerified : true,
+                healthStatus : 'Good',
                 status: 'Vehicle-Registered',
             },
             {
@@ -80,6 +82,7 @@ class FabCar extends Contract {
                 seats: 5,
                 maxPower: 150,
                 isRegistrationVerified : true,
+                healthStatus : 'Good',
                 status: 'Vehicle-Registered',
             },
             {
@@ -103,6 +106,7 @@ class FabCar extends Contract {
                 seats: 5,
                 maxPower: 150,
                 isRegistrationVerified : true,
+                healthStatus : 'Good',
                 status: 'Vehicle-Registered',
             },
             {
@@ -126,6 +130,7 @@ class FabCar extends Contract {
                 seats: 5,
                 maxPower: 150,
                 isRegistrationVerified : true,
+                healthStatus : 'Good',
                 status: 'Vehicle-Registered',
             },
             {
@@ -149,6 +154,7 @@ class FabCar extends Contract {
                 seats: 5,
                 maxPower: 150,
                 isRegistrationVerified : true,
+                healthStatus : 'Good',
                 status: 'Vehicle-Registered',
             },
             {
@@ -172,6 +178,7 @@ class FabCar extends Contract {
                 seats: 5,
                 maxPower: 150,
                 isRegistrationVerified : true,
+                healthStatus : 'Good',
                 status: 'Vehicle-Registered',
             },
             {
@@ -195,6 +202,7 @@ class FabCar extends Contract {
                 seats: 5,
                 maxPower: 150,
                 isRegistrationVerified : true,
+                healthStatus : 'Good',
                 status: 'Vehicle-Registered',
             },
             {
@@ -218,6 +226,7 @@ class FabCar extends Contract {
                 seats: 5,
                 maxPower: 150,
                 isRegistrationVerified : true,
+                healthStatus : 'Good',
                 status: 'Vehicle-Registered',
             },
             {
@@ -241,6 +250,7 @@ class FabCar extends Contract {
                 seats: 5,
                 maxPower: 150,
                 isRegistrationVerified : true,
+                healthStatus : 'Good',
                 status: 'Vehicle-Registered',
             },
             {
@@ -264,6 +274,7 @@ class FabCar extends Contract {
                 seats: 5,
                 maxPower: 150,
                 isRegistrationVerified : true,
+                healthStatus : 'Good',
                 status: 'Vehicle-OnSale',
             },
             {
@@ -287,6 +298,7 @@ class FabCar extends Contract {
                 seats: 5,
                 maxPower: 150,
                 isRegistrationVerified : true,
+                healthStatus : 'Good',
                 status: 'Vehicle-OnSale',
             },
         ];
@@ -449,7 +461,7 @@ class FabCar extends Contract {
         }
         const car = JSON.parse(carAsBytes.toString());
         
-        car.status = "For-Resale"
+        car.status = "For-Sale"
 
         await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
         console.info('============= END : putUpForResale ===========');
@@ -529,6 +541,22 @@ class FabCar extends Contract {
 
         console.info('============= END : requestInspection ===========');
     }
+
+    async requestForScrap(ctx,carNumber){
+        console.info('============= START : requestForScrap ===========');
+
+        const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
+        if (!carAsBytes || carAsBytes.length === 0) {
+            throw new Error(`${carNumber} does not exist`);
+        }
+        const car = JSON.parse(carAsBytes.toString());
+
+        car.healthStatus = "Poor";
+        car.status = "Request-For-Scrap";
+        await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
+
+        console.info('============= END : requestForScrap ===========');
+    }
    
     //Dynamic query car by - make
     async queryCarByMake(ctx,make){
@@ -557,6 +585,7 @@ class FabCar extends Contract {
         queryString.selector = {};
         queryString.selector.docType = 'car';
         queryString.selector.ownerLevel = 0;
+        queryString.selector.status = 'Vehicle-Manufactured';
         queryString.selector.isRegistrationVerified = true;
         let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
         let result = await this.getIteratorData(iterator);
@@ -570,6 +599,7 @@ class FabCar extends Contract {
         queryString.selector ={};
         queryString.selector.docType = 'car';
         queryString.selector.ownerLevel = {"$gt": 0};
+        queryString.selector.status = 'For-Sale';
         queryString.selector.isRegistrationVerified = true;
         let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
         let result = await this.getIteratorData(iterator);
