@@ -480,7 +480,7 @@ class FabCar extends Contract {
         if (!insuranceAsBytes || insuranceAsBytes.length === 0) {
             throw new Error(`${insuranceID} does not exist`);
         }
-        const insurance = JSON.parse(carAsBytes.toString());
+        const insurance = JSON.parse(insuranceAsBytes.toString());
 
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
