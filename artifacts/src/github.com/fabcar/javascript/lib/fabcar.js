@@ -194,6 +194,17 @@ class FabCar extends Contract {
         console.info('============= END : Create Car ===========');
     }
 
+    async deleteCar(ctx, carNumber) {
+        console.info('============= START : Delete Car ===========');
+
+        const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
+        if (!carAsBytes || carAsBytes.length === 0) {
+            throw new Error(`${carNumber} does not exist`);
+        }
+        await ctx.stub.deleteState(carNumber);
+        console.info('============= END : Delete Car ===========');
+    }
+
     async queryAllDocuments(ctx) {
         const startKey = '';
         const endKey = '';

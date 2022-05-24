@@ -98,6 +98,14 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
                     result = await contract.submitTransaction('requestForScrap',args[0]);
                     result = {txid: result.toString()}
                     break;
+
+            case "deleteCar":
+                    console.log("=============")
+                    //result = await contract.submitTransaction('deleteCar', 'CAR1' );
+                    result = await contract.submitTransaction('deleteCar',args[0]);
+                    result = {txid: result.toString()}
+                    break;
+                    
             case "CreateDocument":
                 result = await contract.submitTransaction('DocumentContract:'+fcn, args[0]);
                 console.log(result.toString())
