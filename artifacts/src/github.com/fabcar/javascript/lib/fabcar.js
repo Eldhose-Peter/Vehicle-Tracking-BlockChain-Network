@@ -513,6 +513,15 @@ class FabCar extends Contract {
 
     }
 
+    //Query all scrap requests
+    async queryAllScrapRequests(ctx){
+        let queryString = {};
+        queryString.selector = {};
+        queryString.selector.healthStatus = 'Poor';
+        let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
+        let result = await this.getIteratorData(iterator);
+        return JSON.stringify(result);
+    }
 
     async getIteratorData (iterator){
         let resultArray =[];
