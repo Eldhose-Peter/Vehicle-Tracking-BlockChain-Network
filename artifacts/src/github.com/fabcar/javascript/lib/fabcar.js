@@ -478,25 +478,12 @@ class FabCar extends Contract {
         let queryString = {};
         queryString.selector = {"agency":agency}
         let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
+        let result = await this.getIteratorData(iterator);
 
-        //get vehicle which has raised claim for requests and has insurance scheme by agency
         let schemes =[];
-        while(true){
-            let res = await iterator.next();
-
-            //res.value -- contains other metadata
-            //res.value.value -- contains the actual value
-            //res.value.key -- contains the key
-
-            if(res.value&&res.value.value.toString()){
-                schemes.push(res.value.key);
-            }
-
-            if(res.done){
-                iterator.close();
-                break;
-            }
-        }
+        result.forEach(element => {
+            schemes.push(element.key.toString());
+        });
 
 
         //query insurance claim requests by schemes
@@ -504,12 +491,8 @@ class FabCar extends Contract {
         queryString1.selector = {"insuranceID": {"$in": schemes}};
         queryString1.selector ={"raiseClaim":true};
         let iterator1 = await ctx.stub.getQueryResult(JSON.stringify(queryString1))
-        let result = await this.getIteratorData(iterator1);
-        return JSON.stringify(result);
-
-
-
-
+        let result1 = await this.getIteratorData(iterator1);
+        return JSON.stringify(result1);
 
     }
 
