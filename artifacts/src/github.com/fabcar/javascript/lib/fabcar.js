@@ -294,6 +294,23 @@ class FabCar extends Contract {
         console.info('============= END : putUpForResale ===========');
     }
 
+
+    async createInsurance(ctx, insuranceID, name, cost, coverage, agency, validity) {
+        console.info('============= START : Create Insurance Scheme ===========');
+
+        const insurance = {
+            docType: 'insuranceScheme',
+            name,
+            cost,
+            coverage,
+            agency,
+            validity,
+        };
+
+        await ctx.stub.putState(insuranceID, Buffer.from(JSON.stringify(insurance)));
+        console.info('============= END : Create Insurance Scheme ===========');
+    }
+
     async purchaseInsurance(ctx,carNumber,insuranceID){
         console.info('============= START : purchaseInsurance ===========');
 
