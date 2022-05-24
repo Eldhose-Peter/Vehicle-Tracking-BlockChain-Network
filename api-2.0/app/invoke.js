@@ -78,7 +78,7 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
                 //result = await contract.submitTransaction('createInsurance', 'SCHEME2', 'policy123', '1000', 'full-body', 'MIC', '2');
                 result = {txid: result.toString()}
                 break;    
-                
+
             case "purchaseInsurance":
                 console.log("=============")
                 //result = await contract.submitTransaction('purchaseInsurance', 'CAR1','SCHEME0' );
@@ -111,6 +111,13 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
                     console.log("=============")
                     //result = await contract.submitTransaction('deleteCar', 'CAR1' );
                     result = await contract.submitTransaction('deleteCar',args[0]);
+                    result = {txid: result.toString()}
+                    break;
+
+            case "deleteInsurance":
+                    console.log("=============")
+                    //result = await contract.submitTransaction('deleteInsurance', 'SCHEME1' );
+                    result = await contract.submitTransaction('deleteInsurance',args[0]);
                     result = {txid: result.toString()}
                     break;
 

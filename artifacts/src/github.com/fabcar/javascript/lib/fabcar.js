@@ -311,6 +311,17 @@ class FabCar extends Contract {
         console.info('============= END : Create Insurance Scheme ===========');
     }
 
+    async deleteInsurance(ctx, insuranceID) {
+        console.info('============= START : Delete Insurance Scheme ===========');
+
+        const insuranceAsBytes = await ctx.stub.getState(insuranceID);
+        if (!insuranceAsBytes || insuranceAsBytes.length === 0) {
+            throw new Error(`${insuranceID} does not exist`);
+        }
+        await ctx.stub.deleteState(insuranceID);
+        console.info('============= END : Delete Insurance Scheme ===========');
+    }
+    
     async purchaseInsurance(ctx,carNumber,insuranceID){
         console.info('============= START : purchaseInsurance ===========');
 
