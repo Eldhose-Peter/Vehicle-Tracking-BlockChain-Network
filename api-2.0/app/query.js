@@ -93,6 +93,10 @@ const query = async (channelName, chaincodeName, args, fcn, username, org_name) 
                 console.log("=============")
                 result = await contract.evaluateTransaction('queryInsuranceClaimRequestsByAgency', args[0]);
                 break;
+            case "queryAllScrapRequests":
+                console.log("=============")
+                result = await contract.evaluateTransaction('queryAllScrapRequests', args[0]);
+                break;
             default:
                 break;
         }
