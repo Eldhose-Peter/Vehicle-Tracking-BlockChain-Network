@@ -194,6 +194,17 @@ class FabCar extends Contract {
         console.info('============= END : Create Car ===========');
     }
 
+    async deleteCar(ctx, carNumber) {
+        console.info('============= START : Delete Car ===========');
+
+        const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
+        if (!carAsBytes || carAsBytes.length === 0) {
+            throw new Error(`${carNumber} does not exist`);
+        }
+        await ctx.stub.deleteState(carNumber);
+        console.info('============= END : Delete Car ===========');
+    }
+
     async queryAllDocuments(ctx) {
         const startKey = '';
         const endKey = '';
@@ -281,6 +292,34 @@ class FabCar extends Contract {
 
         await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
         console.info('============= END : putUpForResale ===========');
+    }
+
+
+    async createInsurance(ctx, insuranceID, name, cost, coverage, agency, validity) {
+        console.info('============= START : Create Insurance Scheme ===========');
+
+        const insurance = {
+            docType: 'insuranceScheme',
+            name,
+            cost,
+            coverage,
+            agency,
+            validity,
+        };
+
+        await ctx.stub.putState(insuranceID, Buffer.from(JSON.stringify(insurance)));
+        console.info('============= END : Create Insurance Scheme ===========');
+    }
+
+    async deleteInsurance(ctx, insuranceID) {
+        console.info('============= START : Delete Insurance Scheme ===========');
+
+        const insuranceAsBytes = await ctx.stub.getState(insuranceID);
+        if (!insuranceAsBytes || insuranceAsBytes.length === 0) {
+            throw new Error(`${insuranceID} does not exist`);
+        }
+        await ctx.stub.deleteState(insuranceID);
+        console.info('============= END : Delete Insurance Scheme ===========');
     }
 
     async purchaseInsurance(ctx,carNumber,insuranceID){
@@ -421,6 +460,59 @@ class FabCar extends Contract {
         let result = await this.getIteratorData(iterator);
         return JSON.stringify(result);
     }
+
+    //Query insurance by - agency
+    async queryInsuranceByAgency(ctx,agency){
+
+        let queryString = {};
+        queryString.selector = {"agency":agency}
+        let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))   
+        let result = await this.getIteratorData(iterator);
+        return JSON.stringify(result);
+    }
+
+    //Query insurance claim requests by agency
+    async queryInsuranceClaimRequestsByAgency(ctx,agency){
+
+        //query insurance schemes by agency
+        let queryString = {};
+        queryString.selector = {"agency":agency}
+        let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
+
+        //get vehicle which has raised claim for requests and has insurance scheme by agency
+        let schemes =[];
+        while(true){
+            let res = await iterator.next();
+
+            //res.value -- contains other metadata
+            //res.value.value -- contains the actual value
+            //res.value.key -- contains the key
+
+            if(res.value&&res.value.value.toString()){
+                schemes.push(res.value.key);
+            }
+
+            if(res.done){
+                iterator.close();
+                break;
+            }
+        }
+
+
+        //query insurance claim requests by schemes
+        let queryString1 = {};
+        queryString1.selector = {"insuranceID": {"$in": schemes}};
+        queryString1.selector ={"raiseClaim":true};
+        let iterator1 = await ctx.stub.getQueryResult(JSON.stringify(queryString1))
+        let result = await this.getIteratorData(iterator1);
+        return JSON.stringify(result);
+
+
+
+
+
+    }
+
 
     async getIteratorData (iterator){
         let resultArray =[];
