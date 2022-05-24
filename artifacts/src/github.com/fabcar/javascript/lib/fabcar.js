@@ -471,6 +471,49 @@ class FabCar extends Contract {
         return JSON.stringify(result);
     }
 
+    //Query insurance claim requests by agency
+    async queryInsuranceClaimRequestsByAgency(ctx,agency){
+
+        //query insurance schemes by agency
+        let queryString = {};
+        queryString.selector = {"agency":agency}
+        let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
+
+        //get vehicle which has raised claim for requests and has insurance scheme by agency
+        let schemes =[];
+        while(true){
+            let res = await iterator.next();
+
+            //res.value -- contains other metadata
+            //res.value.value -- contains the actual value
+            //res.value.key -- contains the key
+
+            if(res.value&&res.value.value.toString()){
+                schemes.push(res.value.key);
+            }
+
+            if(res.done){
+                iterator.close();
+                break;
+            }
+        }
+
+
+        //query insurance claim requests by schemes
+        let queryString1 = {};
+        queryString1.selector = {"insuranceID": {"$in": schemes}};
+        queryString1.selector ={"raiseClaim":true};
+        let iterator1 = await ctx.stub.getQueryResult(JSON.stringify(queryString1))
+        let result = await this.getIteratorData(iterator1);
+        return JSON.stringify(result);
+
+
+
+
+
+    }
+
+
     async getIteratorData (iterator){
         let resultArray =[];
 
