@@ -321,7 +321,7 @@ class FabCar extends Contract {
         await ctx.stub.deleteState(insuranceID);
         console.info('============= END : Delete Insurance Scheme ===========');
     }
-    
+
     async purchaseInsurance(ctx,carNumber,insuranceID){
         console.info('============= START : purchaseInsurance ===========');
 
@@ -457,6 +457,16 @@ class FabCar extends Contract {
         queryString.selector.status = 'For-Sale';
         queryString.selector.isRegistrationVerified = true;
         let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
+        let result = await this.getIteratorData(iterator);
+        return JSON.stringify(result);
+    }
+
+    //Query insurance by - agency
+    async queryInsuranceByAgency(ctx,agency){
+
+        let queryString = {};
+        queryString.selector = {"agency":agency}
+        let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))   
         let result = await this.getIteratorData(iterator);
         return JSON.stringify(result);
     }
