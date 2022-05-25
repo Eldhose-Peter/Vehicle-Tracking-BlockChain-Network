@@ -242,6 +242,20 @@ class FabCar extends Contract {
         return JSON.stringify(result);
     }
 
+    async inspectCar(ctx, carNumber){
+        console.info('============= START : Inspect Car ===========');
+
+        const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
+        if (!carAsBytes || carAsBytes.length === 0) {
+            throw new Error(`${carNumber} does not exist`);
+        }
+        let car = JSON.parse(carAsBytes.toString());
+        car.requestForInspection = false;
+        car.status = "Inspected-Vehicle";
+        await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
+        console.info('============= END : Inspect Car ===========');
+    }
+
     async queryAllInsuranceClaimRequests(ctx){
 
         let queryString = {};
@@ -258,6 +272,42 @@ class FabCar extends Contract {
             let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
             let result = await this.getIteratorData(iterator);
             return JSON.stringify(result);
+    }
+
+    async queryInsuranceNotVerified(ctx){
+            
+        let queryString = {};
+        queryString.selector = {"isInsuranceVerified" : false}
+        let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
+        let result = await this.getIteratorData(iterator);
+        return JSON.stringify(result);
+}
+    async verifyInsurance(ctx,carNumber){
+        console.info('============= START : Verify Insurance ===========');
+
+        const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
+        if (!carAsBytes || carAsBytes.length === 0) {
+            throw new Error(`${carNumber} does not exist`);
+        }
+        const car = JSON.parse(carAsBytes.toString());
+        car.isInsuranceVerified = true;
+        car.status = 'Insurance-Verified';
+        await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
+        console.info('============= END : Verify Insurance ===========');
+    }
+
+    async verifyRegistration(ctx,carNumber){
+        console.info('============= START : Verify Registration ===========');
+
+        const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
+        if (!carAsBytes || carAsBytes.length === 0) {
+            throw new Error(`${carNumber} does not exist`);
+        }
+        const car = JSON.parse(carAsBytes.toString());
+        car.isRegistrationVerified = true;
+        car.status = "Registration-Verified";
+        await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
+        console.info('============= END : Verify Registration ===========');
     }
 
     async changeCarOwner(ctx, carNumber, newOwner) {
@@ -478,25 +528,12 @@ class FabCar extends Contract {
         let queryString = {};
         queryString.selector = {"agency":agency}
         let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
+        let result = await this.getIteratorData(iterator);
 
-        //get vehicle which has raised claim for requests and has insurance scheme by agency
         let schemes =[];
-        while(true){
-            let res = await iterator.next();
-
-            //res.value -- contains other metadata
-            //res.value.value -- contains the actual value
-            //res.value.key -- contains the key
-
-            if(res.value&&res.value.value.toString()){
-                schemes.push(res.value.key);
-            }
-
-            if(res.done){
-                iterator.close();
-                break;
-            }
-        }
+        result.forEach(element => {
+            schemes.push(element.key.toString());
+        });
 
 
         //query insurance claim requests by schemes
@@ -504,12 +541,8 @@ class FabCar extends Contract {
         queryString1.selector = {"insuranceID": {"$in": schemes}};
         queryString1.selector ={"raiseClaim":true};
         let iterator1 = await ctx.stub.getQueryResult(JSON.stringify(queryString1))
-        let result = await this.getIteratorData(iterator1);
-        return JSON.stringify(result);
-
-
-
-
+        let result1 = await this.getIteratorData(iterator1);
+        return JSON.stringify(result1);
 
     }
 

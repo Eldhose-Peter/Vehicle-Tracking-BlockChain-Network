@@ -64,6 +64,13 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
                 result = {txid: result.toString()}
                 break;
 
+            case "verifyRegistration":
+                console.log("=============")
+                //result = await contract.submitTransaction('verifyRegistration', 'CAR1', 'Eldho' );
+                result = await contract.submitTransaction('verifyRegistration',args[0]);
+                result = {txid: result.toString()}
+                break;
+
             case "putUpForResale":
                 console.log("=============")
                 //result = await contract.submitTransaction('putUpForReSale', 'CAR1' );
@@ -92,11 +99,25 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
                     result = await contract.submitTransaction('raiseClaimInsurance',args[0]);
                     result = {txid: result.toString()}
                     break;
+            
+            case "verifyInsurance":
+                    console.log("=============")
+                    //result = await contract.submitTransaction('verifyInsurance', 'CAR1' );
+                    result = await contract.submitTransaction('verifyInsurance',args[0]);
+                    result = {txid: result.toString()}
+                    break;
 
             case "requestInspection":
                     console.log("=============")
                     //result = await contract.submitTransaction('requestInspection', 'CAR1' );
                     result = await contract.submitTransaction('requestInspection',args[0]);
+                    result = {txid: result.toString()}
+                    break;
+
+            case "inspectCar":
+                    console.log("=============")
+                    //result = await contract.submitTransaction('inspectCar', 'CAR1' );
+                    result = await contract.submitTransaction('inspectCar',args[0]);
                     result = {txid: result.toString()}
                     break;
             
