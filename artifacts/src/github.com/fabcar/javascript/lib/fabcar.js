@@ -260,6 +260,15 @@ class FabCar extends Contract {
             return JSON.stringify(result);
     }
 
+    async queryInsuranceNotVerified(ctx){
+            
+        let queryString = {};
+        queryString.selector = {"isInsuranceVerified" : false}
+        let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
+        let result = await this.getIteratorData(iterator);
+        return JSON.stringify(result);
+}
+
     async changeCarOwner(ctx, carNumber, newOwner) {
         console.info('============= START : changeCarOwner ===========');
 
