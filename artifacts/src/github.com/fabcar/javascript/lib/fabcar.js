@@ -242,6 +242,20 @@ class FabCar extends Contract {
         return JSON.stringify(result);
     }
 
+    async inspectCar(ctx, carNumber){
+        console.info('============= START : Inspect Car ===========');
+
+        const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
+        if (!carAsBytes || carAsBytes.length === 0) {
+            throw new Error(`${carNumber} does not exist`);
+        }
+        let car = JSON.parse(carAsBytes.toString());
+        car.requestForInspection = false;
+        car.status = "Inspected-Vehicle";
+        await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
+        console.info('============= END : Inspect Car ===========');
+    }
+
     async queryAllInsuranceClaimRequests(ctx){
 
         let queryString = {};
@@ -268,6 +282,33 @@ class FabCar extends Contract {
         let result = await this.getIteratorData(iterator);
         return JSON.stringify(result);
 }
+    async verifyInsurance(ctx,carNumber){
+        console.info('============= START : Verify Insurance ===========');
+
+        const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
+        if (!carAsBytes || carAsBytes.length === 0) {
+            throw new Error(`${carNumber} does not exist`);
+        }
+        const car = JSON.parse(carAsBytes.toString());
+        car.isInsuranceVerified = true;
+        car.status = 'Insurance-Verified';
+        await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
+        console.info('============= END : Verify Insurance ===========');
+    }
+
+    async verifyRegistration(ctx,carNumber){
+        console.info('============= START : Verify Registration ===========');
+
+        const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
+        if (!carAsBytes || carAsBytes.length === 0) {
+            throw new Error(`${carNumber} does not exist`);
+        }
+        const car = JSON.parse(carAsBytes.toString());
+        car.isRegistrationVerified = true;
+        car.status = "Registration-Verified";
+        await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
+        console.info('============= END : Verify Registration ===========');
+    }
 
     async changeCarOwner(ctx, carNumber, newOwner) {
         console.info('============= START : changeCarOwner ===========');
