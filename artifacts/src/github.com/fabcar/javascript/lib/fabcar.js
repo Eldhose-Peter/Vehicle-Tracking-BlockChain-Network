@@ -35,6 +35,7 @@ class FabCar extends Contract {
                 isInsuranceVerified : true,
                 raiseClaim : false,
                 requestForInspection : false,
+                onSale : false,
                 healthStatus : 'Good',
                 status: 'Vehicle-Registered',
             },
@@ -60,6 +61,7 @@ class FabCar extends Contract {
                 isInsuranceVerified : true,
                 raiseClaim : false,
                 requestForInspection : false,
+                onSale : false,
                 healthStatus : 'Good',
                 status: 'Vehicle-Registered',
             },
@@ -85,6 +87,7 @@ class FabCar extends Contract {
                 isInsuranceVerified : true,
                 raiseClaim : false,
                 requestForInspection : false,
+                onSale : false,
                 healthStatus : 'Good',
                 status: 'Vehicle-Registered',
             },
@@ -110,6 +113,7 @@ class FabCar extends Contract {
                 isInsuranceVerified : true,
                 raiseClaim : false,
                 requestForInspection : false,
+                onSale : false,
                 healthStatus : 'Good',
                 status: 'Vehicle-Registered',
             },
@@ -186,6 +190,7 @@ class FabCar extends Contract {
             isInsuranceVerified : false,
             raiseClaim : false,
             requestForInspection : false,
+            onSale : false,
             healthStatus,
             status,
         };
@@ -322,8 +327,9 @@ class FabCar extends Contract {
         
         //increament owner level whenever there is a change of owners
         car.ownerLevel = car.ownerLevel+1;
-        car.status = "Owner-Transfered"
+        car.status = "Owner-Transfered";
         car.isRegistrationVerified = false;
+        car.onSale = false;
 
         await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
         console.info('============= END : changeCarOwner ===========');
@@ -338,6 +344,7 @@ class FabCar extends Contract {
         }
         const car = JSON.parse(carAsBytes.toString());
         
+        car.onSale = true;
         car.status = "For-Sale"
 
         await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
@@ -490,7 +497,7 @@ class FabCar extends Contract {
         queryString.selector = {};
         queryString.selector.docType = 'car';
         queryString.selector.ownerLevel = 0;
-        queryString.selector.status = 'Vehicle-Manufactured';
+        queryString.selector.onSale = true;
         queryString.selector.isRegistrationVerified = true;
         let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
         let result = await this.getIteratorData(iterator);
@@ -504,7 +511,7 @@ class FabCar extends Contract {
         queryString.selector ={};
         queryString.selector.docType = 'car';
         queryString.selector.ownerLevel = {"$gt": 0};
-        queryString.selector.status = 'For-Sale';
+        queryString.selector.onSale = true;
         queryString.selector.isRegistrationVerified = true;
         let iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString))
         let result = await this.getIteratorData(iterator);
