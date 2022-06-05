@@ -351,10 +351,10 @@ class FabCar extends Contract {
         const insurance = {
             docType: 'insuranceScheme',
             name,
-            cost,
+            cost : parseInt(cost),
             coverage,
             agency,
-            validity,
+            validity : parseInt(validity),
         };
 
         await ctx.stub.putState(insuranceID, Buffer.from(JSON.stringify(insurance)));
